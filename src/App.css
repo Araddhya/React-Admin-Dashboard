@@ -1,38 +1,147 @@
-.App {
-  text-align: center;
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+/* Inside the Sidebar component */
+.container {
+    display: flex;
+    margin-left: 0% !important;
+    transition: margin-left 0.5s;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+/* Main content styles */
+main {
+    width: 100%;
+    padding: 20px;
+    gap: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Sidebar styles */
+.sidebar {
+    background: #bd88e1;
+    color: #fff;
+    height: 100vh;
+    width: 200px;
+    transition: all 0.5s;
+    
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.top_section {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.logo {
+    font-size: 30px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bars {
+    display: flex;
+    font-size: 25px;
+    margin-left: 0px;
 }
+
+.link {
+    display: flex;
+    color: #fff;
+    padding: 10px 15px;
+    gap: 15px;
+    transition: all 0.5s;
+}
+
+.link:hover {
+    background: #637741;
+    color: #000;
+    transition: all 0.5s;
+}
+
+.active {
+    background: #637741;
+    color: #000;
+}
+
+.icon, .link_text {
+    font-size: 20px;
+}
+
+
+
+
+/* Navbar styles */
+.navbar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: #282c34; /* Adjust the background color as needed */
+    color:#417755; /* Adjust the text color as needed */
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.right_section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+     gap: 30px;
+    margin-left: 87%;
+}
+
+
+.profile, .logout, .theme_switcher {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: inherit;
+    margin-right: 10px;
+    
+}
+
+.icon {
+    font-size: 25px;
+}
+
+.link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.light, .dark {
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+    
+}
+
+
+.light {
+    background: #bd88e1;
+    color: white;
+}
+
+.dark {
+    background: #282c34;
+    color:white;
+}
+
+.profile {
+    font-weight: bold;
+    
+}
+
