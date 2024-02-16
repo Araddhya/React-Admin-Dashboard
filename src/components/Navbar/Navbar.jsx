@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FaUserCircle, FaMoon, FaSun } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { auth } from "../../firebase"; // import firebaseAuth from firebase.js
+import { auth } from "../../Firebase/firebase"; 
+import './Navbar.module.css'
 
 
 
-// Define a custom hook to get and set the theme from local storage
 const useTheme = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
@@ -22,16 +22,13 @@ const useTheme = () => {
   return [theme, toggleTheme];
 };
 
-// Define a Navbar component
-const Navbar = () => {
-  // Use the custom hook to get and set the theme
-  const [theme, toggleTheme] = useTheme();
 
-  // Define a function to handle the logout logic
+const Navbar = () => {
+  
+  const [theme, toggleTheme] = useTheme();
   const handleLogout = () => {
-    // You can use your own authentication logic here
-    // For example, using firebase auth
-    auth.signOut().then(() => { // use firebaseAuth.signOut() instead of auth.signOut()
+   
+    auth.signOut().then(() => { 
       console.log('User signed out');
     }).catch((error) => {
       console.error(error);

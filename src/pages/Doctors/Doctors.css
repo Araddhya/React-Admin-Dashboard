@@ -1,0 +1,129 @@
+
+
+.doctors-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.doctors-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.doctors-table th, .doctors-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.doctors-table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.doctors-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.edit-buttons-column button {
+  margin-right: 5px;
+  cursor: pointer;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #2179f3;
+  color: white;
+  flex: 1 0 50%;
+  width: 100%;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  width: 100%;
+  margin-top: 3px;
+  
+  flex: 1 0 50%;
+}
+
+.edit-doctor-form {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-doctor-form h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.add-doctor-button, .save-button {
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.add-doctor-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.save-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.add-doctor-button:hover, .save-button:hover {
+  background-color: #45a049;
+}
+
+.loading-message {
+  margin-top: 20px;
+}
+
+/* Media Query for responsiveness */
+@media (max-width: 600px) {
+  .doctors-table th, .doctors-table td {
+    font-size: 12px;
+  }
+
+  .edit-buttons-column button {
+    font-size: 12px;
+  }
+}

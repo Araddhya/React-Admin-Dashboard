@@ -3,8 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-
+import { Password } from 'primereact/password';
 import styles from "./InputControl.module.css";
+
 
 function InputControl({ label, type, options, ...props }) {
   return (
@@ -17,8 +18,12 @@ function InputControl({ label, type, options, ...props }) {
           onChange={(e) => props.onChange(e.value)}
           placeholder={props.placeholder}
         />
-      ) : (
-        <InputText type="text" {...props} />
+      ): (
+        type === "password" ? (  
+          <InputText type="password" {...props} />
+        ) : (
+        <InputText type={props.type} {...props} />
+        )
       )}
     </div>
   );
@@ -26,7 +31,7 @@ function InputControl({ label, type, options, ...props }) {
 
 InputControl.propTypes = {
   label: PropTypes.string,
-  type: PropTypes.oneOf(["text", "dropdown"]).isRequired,
+  type: PropTypes.oneOf(["text", "password","dropdown"]).isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,

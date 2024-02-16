@@ -1,0 +1,33 @@
+/* Appointments.css */
+
+.appointments-container {
+  margin: 20px;
+}
+
+.add-appointment-button {
+  margin-top: 10px;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-form div {
+  margin-bottom: 10px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.close-button {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
