@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { getDoctorAppointments } from "../../Firebase/appointmentsFirebaseService";
-import { notify } from "../../components/Alert/Alert";
+import React, { useEffect, useState } from "react"
+import { getDoctorAppointments } from "../../Firebase/appointmentsFirebaseService"
+import { notify } from "../../components/Alert/Alert"
 import "./ViewAppointments.css"
 
 
 const ViewAppointments = ({ doctorId }) => {
-  const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [appointments, setAppointments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [selectedAppointment, setSelectedAppointment] = useState(null)
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const doctorAppointments = await getDoctorAppointments(doctorId);
-        setAppointments(doctorAppointments);
+        const doctorAppointments = await getDoctorAppointments(doctorId)
+        setAppointments(doctorAppointments)
       } catch (error) {
-        console.error("Error fetching appointments: ", error.message);
+        console.error("Error fetching appointments: ", error.message)
         notify({
           alert: error.message,
           type: 'error'
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchAppointments();
-  }, [doctorId]);
+    fetchAppointments()
+  }, [doctorId])
 
   const handleAppointmentClick = (appointment) => {
-    setSelectedAppointment(appointment);
-  };
+    setSelectedAppointment(appointment)
+  }
 
   return (
     <div>
@@ -58,8 +58,8 @@ const ViewAppointments = ({ doctorId }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 
-export default ViewAppointments;
+export default ViewAppointments

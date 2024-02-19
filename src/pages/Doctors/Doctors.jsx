@@ -1,64 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { getDoctors, addDoctor, updateDoctor, deleteDoctor} from "../../Firebase/DoctorfirebaseService";
+import React, { useEffect, useState } from "react"
+import { getDoctors, addDoctor, updateDoctor, deleteDoctor} from "../../Firebase/DoctorfirebaseService"
 import { notify } from "../../components/Alert/Alert"
-import './Doctors.css';
-import { useSelector } from "react-redux";
-import { createUser } from "../../Firebase/AuthFirebaseService";
+import './Doctors.css'
+import { useSelector } from "react-redux"
+import { createUser } from "../../Firebase/AuthFirebaseService"
 
 const Doctors = () => {
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newDoctor, setNewDoctor] = useState({ name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 });
-  const [editMode, setEditMode] = useState(null);
-  const [editDoctor, setEditDoctor] = useState({ id: "", name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 });
+  const [doctors, setDoctors] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [newDoctor, setNewDoctor] = useState({ name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 })
+  const [editMode, setEditMode] = useState(null)
+  const [editDoctor, setEditDoctor] = useState({ id: "", name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 })
   const user = useSelector(state => state.user.user)
 
   useEffect(() => {
-    console.log("Doctors component mounted");
+    console.log("Doctors component mounted")
     const fetchDoctors = async () => {
       setLoading(true)
       try {
-        const doctorsList = await getDoctors();
-        console.log("Doctors List:", doctorsList);
-        setDoctors(doctorsList);
+        const doctorsList = await getDoctors()
+        console.log("Doctors List:", doctorsList)
+        setDoctors(doctorsList)
       } catch (error) {
-        console.error("Error fetching doctors: ", error.message);
+        console.error("Error fetching doctors: ", error.message)
         notify({
           alert: error.message,
           type: 'error'
         })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchDoctors();
-  }, []);
+    fetchDoctors()
+  }, [])
 
   const handleAddDoctor = async () => {
     setLoading(true)
+    console.log(newDoctor)
     try {
-      if (!newDoctor.name || !newDoctor.email || !newDoctor.specialization || !newDoctor.hospital || !newDoctor.password || !newDoctor.available || !newDoctor.experience ) {
+      if (!newDoctor.name || !newDoctor.email || !newDoctor.specialization || !newDoctor.hospital || !newDoctor.password || !(typeof newDoctor.available === 'boolean') || !newDoctor.experience ) {
         throw new Error("All fields are required.")
       }
-      console.log(newDoctor);
-      //const newDoctorId = await addDoctor(newDoctor);
-      let doctor_user=await createUser(newDoctor.email,newDoctor.password);
-      newDoctor.id=doctor_user.user.uid;
-      const doctor=await addDoctor(newDoctor);
+      console.log(newDoctor)
+      //const newDoctorId = await addDoctor(newDoctor)
+      let doctor_user = await createUser(newDoctor.email,newDoctor.password)
+      newDoctor.id=doctor_user.user.uid
+      const doctor=await addDoctor(newDoctor)
       console.log(doctor)
      // newDoctor.id = newDoctorId
-      //console.log("New doctor added with ID:", newDoctorId);
+      //console.log("New doctor added with ID:", newDoctorId)
       notify({
         alert: `New doctor added with ID: ${doctor.id}`,
         type: 'info'
       })
 
-      setNewDoctor({ name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 });
+      setNewDoctor({ name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 })
 
       setDoctors(prev => [newDoctor, ...prev])
     } catch (error) {
-      console.error("Error adding doctor: ", error.message);
+      console.error("Error adding doctor: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
@@ -66,22 +67,22 @@ const Doctors = () => {
     } finally {
       setLoading(false)
     }
-  };
+  }
 
   const handleEditDoctor = async () => {
     try {
       setLoading(true)
       if (!editDoctor.name || !editDoctor.email || !editDoctor.specialization || !editDoctor.hospital ) {
-        throw new Error("Name, Email, Specialization, and Hospital are required.");
+        throw new Error("Name, Email, Specialization, and Hospital are required.")
       }
       editDoctor.id = editMode
-      await updateDoctor(editDoctor);
+      await updateDoctor(editDoctor)
       
       setDoctors(prev => prev.map((doctor) => doctor.id === editMode ? {...doctor, ...editDoctor} : doctor))
-      setEditMode(null);
-      setEditDoctor({ id: "", name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 });
+      setEditMode(null)
+      setEditDoctor({ id: "", name: "", email: "", specialization: "", hospital: "", available: false, experience: 0 })
     } catch (error) {
-      console.error("Error editing doctor: ", error.message);
+      console.error("Error editing doctor: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
@@ -89,15 +90,15 @@ const Doctors = () => {
     } finally {
       setLoading(false)
     }
-  };
+  }
 
   const handleDeleteDoctor = async (doctorId) => {
     setLoading(true)
     try {
-      await deleteDoctor(doctorId);
+      await deleteDoctor(doctorId)
       setDoctors(prev => prev.filter(doctor => doctor.id !== doctorId))
     } catch (error) {
-      console.error("Error deleting doctor: ", error.message);
+      console.error("Error deleting doctor: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
@@ -105,15 +106,14 @@ const Doctors = () => {
     } finally {
       setLoading(false)
     }
-  };
+  }
 
   if (loading) {
-    return <p>Loading doctors...</p>;
+    return <p>Loading doctors...</p>
   }
 
   return (
     <div className="doctors-container">
-      {console.log(user)}
       {/* {
         user.role == 'doctor'
         ? <h1>DOCTOR</h1>
@@ -133,20 +133,24 @@ const Doctors = () => {
           </tr>
         </thead>
         <tbody>
-          {doctors.map((doctor) => (
-            <tr key={doctor.id}>
-              <td>{doctor.name}</td>
-              <td>{doctor.email}</td>
-              <td>{doctor.specialization}</td>
-              <td>{doctor.hospital}</td>
-              <td>{doctor.available ? 'Yes' : 'No'}</td>
-              <td>{doctor.experience} years</td>
-              <td>
-                <button className="edit-button" onClick={() => setEditMode(doctor.id)}>Edit</button>
-                <button className="delete-button" onClick={() => handleDeleteDoctor(doctor.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
+          {
+            doctors.length
+            ? doctors.map((doctor) => (
+              <tr key={doctor.id}>
+                <td>{doctor.name}</td>
+                <td>{doctor.email}</td>
+                <td>{doctor.specialization}</td>
+                <td>{doctor.hospital}</td>
+                <td>{doctor.available ? 'Yes' : 'No'}</td>
+                <td>{doctor.experience} years</td>
+                <td>
+                  <button className="edit-button" onClick={() => setEditMode(doctor.id)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDeleteDoctor(doctor.id)}>Delete</button>
+                </td>
+              </tr>
+            ))
+            : <p>No doctors have signed up yet</p>
+          }
         </tbody>
       </table>
 
@@ -213,7 +217,7 @@ const Doctors = () => {
         </div>
       )}
 
-      <h3>Add New Doctor</h3>
+      {/* <h3>Add New Doctor</h3>
       <label htmlFor='new-doctor-name' className="form-label">Name:</label>
       <input
         type="text"
@@ -227,7 +231,7 @@ const Doctors = () => {
             type="password"
             id="new-doctor-password"
             value={newDoctor.password}
-            onChange={(e) => setEditDoctor({ ...editDoctor, password: e.target.value })}
+            onChange={(e) => setNewDoctor({ ...newDoctor, password: e.target.value })}
             className="form-input"
      />
       <label htmlFor='new-doctor-email' className="form-label">Email:</label>
@@ -277,9 +281,9 @@ const Doctors = () => {
         className="form-input"
       />
 
-      <button className="add-doctor-button" onClick={handleAddDoctor}>Add Doctor</button>
+      <button className="add-doctor-button" onClick={handleAddDoctor}>Add Doctor</button> */}
     </div>
-  );
-};
+  )
+}
 
-export default Doctors;
+export default Doctors

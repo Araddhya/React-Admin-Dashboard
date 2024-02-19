@@ -1,95 +1,95 @@
-import React, { useEffect, useState } from "react";
-import { getDoctors, updateDoctor, deleteDoctor } from "../../Firebase/DoctorfirebaseService";
-import DoctorForm from "./DoctorForm";
-import { notify } from "../../components/Alert/Alert";
+import React, { useEffect, useState } from "react"
+import { getDoctors, updateDoctor, deleteDoctor } from "../../Firebase/DoctorfirebaseService"
+import DoctorForm from "./DoctorForm"
+import { notify } from "../../components/Alert/Alert"
 import './ManageDoctors.css'
 
 const ManageDoctors = () => {
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [editMode, setEditMode] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [doctors, setDoctors] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [editMode, setEditMode] = useState(null)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     const fetchDoctorsList = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const doctorsList = await getDoctors();
-        setDoctors(doctorsList);
+        const doctorsList = await getDoctors()
+        setDoctors(doctorsList)
       } catch (error) {
-        console.error("Error fetching doctors: ", error.message);
+        console.error("Error fetching doctors: ", error.message)
         notify({
           alert: error.message,
           type: 'error'
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchDoctorsList();
-  }, []);
+    fetchDoctorsList()
+  }, [])
 
   const handleEditDoctor = async (doctorId, updatedDoctorData) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      await updateDoctor(doctorId, updatedDoctorData);
+      await updateDoctor(doctorId, updatedDoctorData)
       const updatedDoctors = doctors.map((doctor) =>
         doctor.id === doctorId ? { ...doctor, ...updatedDoctorData } : doctor
-      );
-      setDoctors(updatedDoctors);
-      setEditMode(null);
+      )
+      setDoctors(updatedDoctors)
+      setEditMode(null)
       notify({
         alert: "Doctor updated successfully",
         type: 'info'
-      });
+      })
     } catch (error) {
-      console.error("Error updating doctor: ", error.message);
+      console.error("Error updating doctor: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleDeleteDoctor = async (doctorId) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      await deleteDoctor(doctorId);
-      const updatedDoctors = doctors.filter((doctor) => doctor.id !== doctorId);
-      setDoctors(updatedDoctors);
+      await deleteDoctor(doctorId)
+      const updatedDoctors = doctors.filter((doctor) => doctor.id !== doctorId)
+      setDoctors(updatedDoctors)
       notify({
         alert: "Doctor deleted successfully",
         type: 'info'
-      });
+      })
     } catch (error) {
-      console.error("Error deleting doctor: ", error.message);
+      console.error("Error deleting doctor: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleSearch = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const filteredDoctors = await getDoctors({ search: searchQuery });
-      setDoctors(filteredDoctors);
+      const filteredDoctors = await getDoctors({ search: searchQuery })
+      setDoctors(filteredDoctors)
     } catch (error) {
-      console.error("Error searching doctors: ", error.message);
+      console.error("Error searching doctors: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div>
@@ -125,7 +125,7 @@ const ManageDoctors = () => {
         </ul>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ManageDoctors;
+export default ManageDoctors

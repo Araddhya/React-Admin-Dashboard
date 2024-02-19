@@ -1,10 +1,10 @@
-/// InputControl.js
-import React from "react";
-import PropTypes from "prop-types";
-import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
-import { Password } from 'primereact/password';
-import styles from "./InputControl.module.css";
+
+import React from "react"
+import PropTypes from "prop-types"
+import { InputText } from 'primereact/inputtext'
+import { Dropdown } from 'primereact/dropdown'
+import { Password } from 'primereact/password'
+import styles from "./InputControl.module.css"
 
 
 function InputControl({ label, type, options, ...props }) {
@@ -19,6 +19,7 @@ function InputControl({ label, type, options, ...props }) {
           placeholder={props.placeholder}
         />
       ): (
+        
         type === "password" ? (  
           <InputText type="password" {...props} />
         ) : (
@@ -26,7 +27,7 @@ function InputControl({ label, type, options, ...props }) {
         )
       )}
     </div>
-  );
+  )
 }
 
 InputControl.propTypes = {
@@ -41,31 +42,10 @@ InputControl.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-};
-
-export default InputControl;
-
-
-
-
-
-/*
-import React from "react";
-
-import styles from "./InputControl.module.css";
-
-import { InputText } from 'primereact/inputtext';
-        
-
-function InputControl(props) {
-  return (
-    <div className={styles.container}>
-      {props.label && <label>{props.label}</label>}     
-      <InputText type="text" {...props} />
-    </div>
-  );
 }
 
-export default InputControl;
+export default InputControl
 
-*/
+
+
+

@@ -1,114 +1,142 @@
-
 .patients-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+  height: fit-content;
+  width: fit-content;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-  h2 {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 20px;
+h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 20px;
+  color: #555;
+  margin-top: 30px;
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.patients-table th, .patients-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  
+}
+
+.patients-table th {
+  background-color: #4caf50;
+  color: white;
+  
+}
+
+.patients-table tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+.edit-buttons-column button {
+  margin-right: 5px;
+  cursor: pointer;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #4caf50;
+  color: white;
+  flex: 1 0 50%;
+  width: 100%;
+  padding: 4px;
+}
+
+.delete-button {
+  background-color: #ff3333;
+  color: white;
+  width: 100%;
+  margin-top: 3px;
+  flex: 1 0 50%;
+  padding: 4px;
+}
+
+.edit-patient-form {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-patient-form h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.add-patient-button, .save-button {
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.add-patient-button {
+  background-color: #4caf50;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.add-patient-button:hover, .save-button:hover {
+  background-color: #45a049;
+}
+
+.loading-message {
+  margin-top: 20px;
+}
+
+/* Media Query for responsiveness */
+@media (max-width: 600px) {
+  .patients-table th, .patients-table td {
+    font-size: 12px;
   }
-  
-  h3 {
-    font-size: 20px;
-    color: #555;
-    margin-top: 30px;
+
+  .edit-buttons-column button {
+    font-size: 12px;
   }
-  
-  
-  .patients-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .patient-item {
-    margin-bottom: 15px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .patient-item:hover {
-    background-color: #f0f8ff; 
-  }
-  
-  .edit-button,
-  .delete-button,
-  .save-button,
-  .add-patient-button {
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .edit-button {
-    background-color: #4caf50;
-    color: white;
-    margin-right: 8px;
-  }
-  
-  .delete-button {
-    background-color: #ff3333;
-    color: white;
-    margin-right: 8px;
-  }
-  
-  .save-button {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .add-patient-button {
-    background-color: #4caf50;
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .add-patient-button:hover {
-    background-color: #4caf50;
-  }
-  
-  
-  .edit-patient-form {
-    margin-top: 20px;
-  }
-  
-  .form-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
-  .form-input:focus {
-    border-color: #4caf50;
-    outline: none;
-  }
-  
+}

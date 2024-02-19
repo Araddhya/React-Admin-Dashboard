@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
-import { FaUserCircle, FaMoon, FaSun } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { auth } from "../../Firebase/firebase"; 
-import './Navbar.module.css'
+import React, { useState } from 'react'
+import { FaUserCircle, FaMoon, FaSun } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import { auth } from "../../Firebase/firebase" 
+import './Navbar.css'
 
 
 
 const useTheme = () => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
 
   const toggleTheme = () => {
     if (theme === 'light') {
-      setTheme('dark');
-      localStorage.setItem('theme', 'dark');
+      setTheme('dark')
+      localStorage.setItem('theme', 'dark')
     } else {
-      setTheme('light');
-      localStorage.setItem('theme', 'light');
+      setTheme('light')
+      localStorage.setItem('theme', 'light')
     }
-  };
+  }
 
-  return [theme, toggleTheme];
-};
+  return [theme, toggleTheme]
+}
 
 
 const Navbar = () => {
   
-  const [theme, toggleTheme] = useTheme();
+  const [theme, toggleTheme] = useTheme()
   const handleLogout = () => {
    
     auth.signOut().then(() => { 
-      console.log('User signed out');
+      console.log('User signed out')
     }).catch((error) => {
-      console.error(error);
-    });
-  };
+      console.error(error)
+    })
+  }
 
   return (
     <div className={`navbar ${theme}`}>
@@ -59,7 +59,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

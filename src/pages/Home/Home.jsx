@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
+import React from "react"
+import { useEffect } from "react"
 import 
 { BsFillCalendarFill,BsCardList , BsPeopleFill, BsFileText}
  from 'react-icons/bs'
@@ -44,6 +44,6 @@ const Home = () => {
                 <h1>42</h1>
             </div>
         </div>
-        </main>);
+        </main>)
 } 
-export default Home;
+export default Home

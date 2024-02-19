@@ -1,6 +1,6 @@
-import React from "react";
-import ManageDoctors from "../../pages/Doctors/ManageDoctors";
-import ViewAppointments from "../../pages/Appointments/ViewAppointments";
+import React from "react"
+import ManageDoctors from "../../pages/Doctors/ManageDoctors"
+import ViewAppointments from "../../pages/Appointments/ViewAppointments"
 
 const Admin = () => {
   return (
@@ -9,7 +9,7 @@ const Admin = () => {
       <ManageDoctors />
       <ViewAppointments />
     </div>
-  );
-};
+  )
+}
 
-export default Admin;
+export default Admin

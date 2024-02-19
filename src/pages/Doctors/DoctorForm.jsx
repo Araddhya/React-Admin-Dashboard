@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 
 
@@ -8,15 +8,15 @@ const DoctorForm = ({ doctor, onSave, onCancel }) => {
     name: doctor.name || "",
     specialization: doctor.specialization || "",
   
-  });
+  })
 
   const handleChange = (e) => {
-    setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
-  };
+    setUpdatedData({ ...updatedData, [e.target.name]: e.target.value })
+  }
 
   const handleSave = () => {
-    onSave(updatedData);
-  };
+    onSave(updatedData)
+  }
 
   return (
     <div>
@@ -34,7 +34,7 @@ const DoctorForm = ({ doctor, onSave, onCancel }) => {
       <button onClick={handleSave}>Save</button>
       <button onClick={onCancel}>Cancel</button>
     </div>
-  );
-};
+  )
+}
 
-export default DoctorForm;
+export default DoctorForm

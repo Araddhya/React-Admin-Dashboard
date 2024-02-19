@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { getPatients, addPatient, updatePatient, deletePatient } from "../../Firebase/PatientfirebaseService";
-import { notify } from "../../components/Alert/Alert";
-import "./Patients.css";
-import { getDoctors } from "../../Firebase/DoctorfirebaseService";
-import { createUser } from "../../Firebase/AuthFirebaseService";
+import React, { useEffect, useState } from "react"
+import { getPatients, getPatientsForDoctor, addPatient, updatePatient, deletePatient } from "../../Firebase/PatientfirebaseService"
+import { notify } from "../../components/Alert/Alert"
+import "./Patients.css"
+import { getDoctors } from "../../Firebase/DoctorfirebaseService"
+import { createUser } from "../../Firebase/AuthFirebaseService"
 
-const Patients = () => {
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newPatient, setNewPatient] = useState({ name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" });
-  const [editMode, setEditMode] = useState(null);
-  const [editPatient, setEditPatient] = useState({ id: "", name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" });
+const Patients = ({doctorId, role}) => {
+  const [patients, setPatients] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [newPatient, setNewPatient] = useState({ name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" })
+  const [editMode, setEditMode] = useState(null)
+  const [editPatient, setEditPatient] = useState({ id: "", name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" })
   const [doctors, setDoctors] = useState([])
 
   useEffect(() => {
     const fetchPatients = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const patientsList = await getPatients();
-        setPatients(patientsList);
+        let patientsList
+        if(role === 'doctor') patientsList = await getPatientsForDoctor(doctorId)
+        else if (role === 'admin') patientsList = await getPatients(doctorId)
+        setPatients(patientsList)
       } catch (error) {
-        console.error("Error fetching patients: ", error.message);
+        console.error("Error fetching patients: ", error.message)
         notify({
           alert: error.message,
           type: 'error'
-        });
+        })
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchPatients();
-  }, []);
+    fetchPatients()
+  }, [])
 
   useEffect(() => {
     const func = async () => {
@@ -43,97 +45,113 @@ const Patients = () => {
 
 
   const handleAddPatient = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       if (!newPatient.name || !newPatient.age || !newPatient.gender || !newPatient.contactNumber || !newPatient.selectedDoctor || !newPatient.email || !newPatient.password) {
-        throw new Error("All fields are required.");
+        throw new Error("All fields are required.")
       }
       console.log(newPatient)
-      let patient_user = await createUser(newPatient.email, newPatient.password);
-      newPatient.id = patient_user.user.uid;
-      const patient = await addPatient(newPatient);
+      let patient_user = await createUser(newPatient.email, newPatient.password)
+      newPatient.id = patient_user.user.uid
+      const patient = await addPatient(newPatient)
       console.log(patient)
       notify({
         alert: `New patient added with ID: ${patient.id}`,
         type: 'info'
-      });
+      })
 
-      setNewPatient({ name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" });
-      setPatients(prev => [newPatient, ...prev]);
+      setNewPatient({ name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" })
+      setPatients(prev => [newPatient, ...prev])
     } catch (error) {
-      console.error("Error adding patient: ", error.message);
+      console.error("Error adding patient: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
   
   
 
   const handleEditPatient = async () => {
     try {
-      setLoading(true);
-      if (!editPatient.name || !editPatient.age || !editPatient.gender || !editPatient.contactNumber || !editPatient.selectedDoctor) {
-        throw new Error("All fields are required.");
-      }
+      setLoading(true)
+      if (!editPatient.name || !editPatient.age || !editPatient.gender || !editPatient.contactNumber) throw new Error("All fields are required.")
+      if (role == 'admin' && !editPatient.selectedDoctor) throw new Error("All fields are required.")
 
-      editPatient.id = editMode;
-      await updatePatient(editPatient);
-
-      setPatients(prev => prev.map((patient) => patient.id === editMode ? { ...patient, ...editPatient } : patient));
-      setEditMode(null);
-      setEditPatient({ id: "", name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" });
+      editPatient.id = editMode
+      if(role !== 'admin') delete editPatient.selectedDoctor
+      const updatedPatients = await Promise.all(patients.map(async (patient) => patient.id === editMode ? await updatePatient(editPatient) : patient))
+      setPatients(updatedPatients)
+      setEditMode(null)
+      setEditPatient({ id: "", name: "", age: "", gender: "", contactNumber: "", selectedDoctor: "" })
     } catch (error) {
-      console.error("Error editing patient: ", error.message);
+      console.error("Error editing patient: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleDeletePatient = async (patientId) => {
-    setLoading(true);
+    setLoading(true)
     try {
-      await deletePatient(patientId);
-      setPatients(prev => prev.filter(patient => patient.id !== patientId));
+      await deletePatient(patientId)
+      setPatients(prev => prev.filter(patient => patient.id !== patientId))
     } catch (error) {
-      console.error("Error deleting patient: ", error.message);
+      console.error("Error deleting patient: ", error.message)
       notify({
         alert: error.message,
         type: 'error'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (loading) {
-    return <p>Loading patients...</p>;
+    return <p>Loading patients...</p>
   }
 
   return (
     <div className="patients-container">
       <h2>Patients</h2>
-      <ul className="patients-list">
-        {patients.map((patient) => (
-          <li key={patient.id} className="patient-item">
-            <div>
-              {console.log(patient)}
-              {patient?.name} - {patient?.age} years - {patient?.gender} - {patient?.contactNumber} - Doctor: {patient?.selectedDoctor?.name}
-            </div>
-            <div className="edit-buttons-column">
-              <button className="edit-button" onClick={() => setEditMode(patient.id)}>Edit</button>
-              <button className="delete-button" onClick={() => handleDeletePatient(patient.id)}>Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <table className="patients-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Contact Number</th>
+            <th>Doctor Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            patients.length
+            ? patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>{patient.name}</td>
+                <td>{patient.age}</td>
+                <td>{patient.gender}</td>
+                <td>{patient.contactNumber}</td>
+                <td>{patient.selectedDoctor ? `${patient.selectedDoctor.name} - ${patient.selectedDoctor.specialization || ''}` : 'N/A'}</td>
+                <td>
+                  <button className="edit-button" onClick={() => setEditMode(patient.id)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDeletePatient(patient.id)}>Remove</button>
+                </td>
+              </tr>
+            ))
+            : <p>No patients assigned to you</p>
+          }
+        </tbody>
+      </table>
 
       {editMode !== null && (
         <div className="edit-patient-form">
@@ -170,24 +188,31 @@ const Patients = () => {
             onChange={(e) => setEditPatient({ ...editPatient, contactNumber: e.target.value })}
             className="form-input"
           />
-          <label htmlFor='patient-selected-doctor' className="form-label">Select Doctor:</label>
-          <select
-            id="patient-selected-doctor"
-            value={editPatient.selectedDoctor}
-            onChange={(e) => setEditPatient({ ...editPatient, selectedDoctor: e.target.value })}
-            className="form-input"
-          >
-            <option value="" disabled>Select a doctor</option>
-           
-            {doctors.map((doctor) => (
-              <option key={doctor.id} value={doctor.id}>{doctor.name} - {doctor.specialization}</option>
-            ))}
-          </select>
+          
+          {
+            role === 'admin'
+            ? (<>
+              <label htmlFor='patient-selected-doctor' className="form-label">Select Doctor:</label>
+                <select
+                id="patient-selected-doctor"
+                value={editPatient.selectedDoctor}
+                onChange={(e) => setEditPatient({ ...editPatient, selectedDoctor: e.target.value })}
+                className="form-input"
+              >
+                <option value="" disabled>Select a doctor</option>
+                {doctors.map((doctor) => (
+                  <option key={doctor.id} value={doctor.id}>{doctor.name} - {doctor.specialization}</option>
+                ))}
+              </select>
+            </>)
+            : null
+          }
+          
           <button className="save-button" onClick={handleEditPatient}>Save</button>
         </div>
       )}
 
-      <h3>Add New Patient</h3>
+      {/* <h3>Add New Patient</h3>
       <label htmlFor='new-patient-name' className="form-label">Name:</label>
       <input
         type="text"
@@ -220,7 +245,7 @@ const Patients = () => {
         onChange={(e) => setNewPatient({ ...newPatient, contactNumber: e.target.value })}
         className="form-input"
       />
-      <label htmlFor='new-patient-email' className="form-label">email:</label>
+      <label htmlFor='new-patient-email' className="form-label">Email:</label>
       <input
         type="text"
         id="new-patient-email"
@@ -228,7 +253,7 @@ const Patients = () => {
         onChange={(e) => setNewPatient({ ...newPatient, email: e.target.value })}
         className="form-input"
       />
-      <label htmlFor='new-patient-password' className="form-label">password:</label>
+      <label htmlFor='new-patient-password' className="form-label">Password:</label>
       <input
         type="password"
         id="new-patient-password"
@@ -245,14 +270,12 @@ const Patients = () => {
       >
         <option value="" disabled>Select a doctor</option>
         {doctors.map((doctor) => (
-            <option key={doctor.id} value={doctor.id}>{doctor.name} - {doctor.specialization}</option>
-          ))}
+          <option key={doctor.id} value={doctor.id}>{doctor.name} - {doctor.specialization}</option>
+        ))}
       </select>
-      <button className="add-patient-button" onClick={handleAddPatient}>Add Patient</button>
+      <button className="add-patient-button" onClick={handleAddPatient}>Add Patient</button> */}
     </div>
-  );
-};
+  )
+}
 
-
-
-export default Patients;
+export default Patients
